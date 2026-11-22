@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Habit Tracker | Habit Tracker</title><meta name="description" content="Add habits, check them off each day and build streaks that keep you going."><link rel="icon" href="../favicon.svg" type="image/svg+xml"><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#1f2937;background:#fff;line-height:1.6}
+a{color:#16a34a}header{background:#14532d;color:#fff;padding:14px 16px}header .wrap{max-width:1080px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.logo{font-size:clamp(1.3rem,4vw,1.8rem);font-weight:800;color:#fff;text-decoration:none}nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{color:#fff;text-decoration:none;padding:10px 12px;border-radius:8px;min-height:44px;display:inline-flex;align-items:center;font-size:.95rem}
+nav a:hover{background:rgba(255,255,255,.18)}.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.hero{background:#eef7f0;padding:clamp(28px,6vw,56px) 16px;text-align:center}.hero h1{font-size:clamp(1.7rem,6vw,2.8rem);line-height:1.15;margin:0 0 12px;color:#14532d}
+.hero p{font-size:clamp(1rem,2.5vw,1.2rem);max-width:720px;margin:0 auto 18px}.btn{display:inline-block;background:#16a34a;color:#fff;padding:14px 26px;border-radius:10px;text-decoration:none;font-weight:700;min-height:48px;font-size:1.05rem}
+.btn2{display:inline-block;border:2px solid #14532d;color:#14532d;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:700;min-height:48px}
+section{padding:28px 0}h2{font-size:clamp(1.35rem,4vw,1.9rem);color:#14532d;line-height:1.25}h3{color:#14532d}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}.card{border:1px solid #dbe2ea;border-radius:18px;padding:18px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card h3{margin-top:0}.card img,.guide-img{width:100%;height:auto;border-radius:10px;display:block}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.toolbox{border:2px solid #14532d;border-radius:18px;padding:20px;background:#eef7f0;margin:18px 0}
+label{display:block;font-weight:600;margin:12px 0 4px}input,select,textarea,button{font-size:1rem;padding:12px;border:1px solid #9aa7b5;border-radius:8px;width:100%;min-height:44px}
+button{background:#16a34a;color:#fff;border:none;font-weight:700;cursor:pointer}button.secondary{background:#fff;color:#14532d;border:2px solid #14532d}
+.result{font-size:clamp(1.2rem,4vw,1.7rem);font-weight:700;color:#14532d;margin:14px 0}.big{font-size:clamp(2rem,8vw,3.2rem);font-weight:800;color:#14532d;text-align:center}
+.bar{height:18px;background:#e5e7eb;border-radius:9px;overflow:hidden}.bar>div{height:100%;background:#16a34a}
+.tip{background:#fff8e1;border-left:5px solid #16a34a;padding:14px 16px;border-radius:8px;margin:20px 0}
+.faq-item{border-bottom:1px solid #dbe2ea;padding:12px 0}footer{background:#14532d;color:#fff;padding:28px 16px;margin-top:30px}
+footer a{color:#fff}.footlinks{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:12px}
+ul.check li{margin-bottom:8px}.passage{font-size:clamp(1.05rem,3vw,1.3rem);line-height:1.9;background:#f8fafc;border:1px solid #dbe2ea;border-radius:10px;padding:16px}
+.passage .ok{color:#15803d}.passage .bad{color:#dc2626;background:#fee2e2}.passage .cur{background:#dbeafe}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #dbe2ea;padding:10px;text-align:left}
+@media(max-width:640px){header .wrap{flex-direction:column;align-items:flex-start}nav a{padding:10px 8px;font-size:.9rem}.cards,.guide-grid{grid-template-columns:1fr}section{padding:20px 0}}
+@media(max-width:480px){body{font-size:1rem}.hero{padding:24px 12px}.btn,.btn2{width:100%;text-align:center}input,select,textarea,button{font-size:1rem}table{font-size:.9rem}th,td{padding:8px 6px}}
+</style></head><body><header><div class="wrap"><a class="logo" href="../index.html">Habit Tracker</a><nav><a href="../index.html">Home</a><a href="../tools/habit-tracker.html">Main Tool</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy</a></nav></div></header><main class="wrap"><section><h1>Habit Tracker</h1><p>Add habits, check them off each day and build streaks that keep you going.</p><p><strong>Note:</strong> Your data is stored only in your browser using localStorage. No account, no server, data stays on your device.</p><div class="toolbox">
+<label for="hn">New habit name</label><input type="text" id="hn" placeholder="e.g. Drink 8 glasses of water" maxlength="80">
+<button onclick="addHabit()">Add habit</button><div id="list"></div><p><button class="secondary" onclick="clearHabits()">Clear all habits</button></p><p>Your habits are stored only in your browser (localStorage). No account, no server, data stays on your device.</p>
+<script>
+function load(){try{return JSON.parse(localStorage.getItem('habitData')||'{"habits":[]}');}catch(e){return {habits:[]};}}
+function save(d){try{localStorage.setItem('habitData',JSON.stringify(d));}catch(e){}}
+function today(){return new Date().toISOString().slice(0,10);}
+function streak(dates){var s=0;var d=new Date();if(dates.indexOf(d.toISOString().slice(0,10))<0){d.setDate(d.getDate()-1);}while(dates.indexOf(d.toISOString().slice(0,10))>=0){s++;d.setDate(d.getDate()-1);}return s;}
+function render(){var d=load();var el=document.getElementById('list');if(!d.habits.length){el.innerHTML='<p>No habits yet. Add your first habit above.</p>';return;}
+var h='<ul class="check">';d.habits.forEach(function(x,i){var done=x.dates.indexOf(today())>=0;h+='<li><strong>'+x.name+'</strong> — streak: '+streak(x.dates)+' days <button onclick="toggleHabit('+i+')">'+(done?'Done today — tap to undo':'Check in today')+'</button> <button class="secondary" onclick="delHabit('+i+')">Delete</button></li>';});el.innerHTML=h+'</ul>';}
+function addHabit(){var v=document.getElementById('hn').value.trim();if(!v){return;}var d=load();d.habits.push({name:v,dates:[]});save(d);document.getElementById('hn').value='';render();}
+function toggleHabit(i){var d=load();var t=today();var ix=d.habits[i].dates.indexOf(t);if(ix>=0){d.habits[i].dates.splice(ix,1);}else{d.habits[i].dates.push(t);}save(d);render();}
+function delHabit(i){var d=load();d.habits.splice(i,1);save(d);render();}
+function clearHabits(){if(confirm('Delete all habits?')){save({habits:[]});render();}}
+render();
+</script></div><p><a href="../index.html">Back to home</a> | <a href="../guides/how-to-start-a-habit-tracker.html">Read a guide</a></p></section></main><footer><div class="wrap"><div class="footlinks"><a href="../index.html">Home</a><a href="../tools/habit-tracker.html">Habit Tracker</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../privacy.html">Privacy Policy</a><a href="../disclaimer.html">Disclaimer</a></div><p style="text-align:center;margin:0">Habit Tracker — free tools and practical guides. All tools run in your browser.</p></div></footer></body></html>
