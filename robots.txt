@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://habittracker.github.io/sitemap.xml
